@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Project Portal",
+  "description": "Dashboard for your project's related apps & services.",
+  "version": "0.1",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/icon128.png"
+  }
+}
