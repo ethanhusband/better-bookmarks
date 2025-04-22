@@ -4,8 +4,10 @@
   "description": "Dashboard for your project's related apps & services.",
   "version": "0.1",
   "permissions": ["storage"],
+  "chrome_url_overrides": {
+    "newtab": "src/entrypoints/newtab.html"
+  },
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icons/icon128.png"
+    "default_popup": "src/entrypoints/popup.html"
   }
 }

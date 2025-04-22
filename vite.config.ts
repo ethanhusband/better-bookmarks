@@ -6,10 +6,11 @@ import path from 'path';
 export default defineConfig({
   plugins: [svelte()],
   build: {
-    outDir: 'dist',
+    outDir: path.resolve(__dirname, 'dist'),
     rollupOptions: {
       input: {
-        popup: path.resolve(__dirname, 'popup.html')
+        newtab: path.resolve(__dirname, 'src/entrypoints/newtab.html'),
+        popup: path.resolve(__dirname, 'src/entrypoints/popup.html')
       },
       output: {
         entryFileNames: '[name].js',
