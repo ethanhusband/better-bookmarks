@@ -5,21 +5,23 @@
   import Folder from '@/components/Folder.svelte';
   import Breadcrumbs from '@/components/Breadcrumbs.svelte';
 
-  import type { BookmarkTreeNode } from '@/types/bookmarkTreeNode';
+  import { type BookmarkTreeNode, type BookmarkNode, type FolderNode, isFolderNode, isBookmarkNode, extractBookmarks, extractFolders } from '@/types/bookmarks';
   import type { Breadcrumb } from '@/types/breadcrumb';
-    import BackgroundImage from './components/BackgroundImage.svelte';
+  import BackgroundImage from './components/BackgroundImage.svelte';
 
   let breadcrumbs: Breadcrumb[] = [];
-  let displayedBookmarks: BookmarkTreeNode[] = [];
+  let displayedBookmarks: BookmarkNode[] = [];
+  let displayedFolders: FolderNode[] = [];
   let selectedFolderId: string | null = null; // null = root level
 
   function loadFolder(folderId: string | null) {
+    _updateDisplayed(folderId);
     _updateBreadcrumbs(folderId);
-    _updateDisplayedBookmarks(folderId);
     selectedFolderId = folderId;
   }
 
-  function _updateDisplayedBookmarks(folderId: string | null) {
+  function _updateDisplayed(folderId: string | null) {
+    let allDisplayed: BookmarkTreeNode[] = [];
     if (folderId === null) {
       chrome.bookmarks.getTree((tree) => {
         // chrome by default will return [bookmarksBar, otherBookmarks]
@@ -29,23 +31,24 @@
           throw new Error('bookmark API error');
         }
 
-        const rootUserBookmarks: BookmarkTreeNode[] = [];
         rootChildren.forEach((child) => {
           if (!child.children) {
-            throw new Error('no children in chrome root bookmark folders?')
+            throw new Error('no children in chrome root bookmark folders (?)')
           }
 
-          rootUserBookmarks.push(...child.children)
+          allDisplayed.push(...child.children);
         });
 
-        displayedBookmarks = rootUserBookmarks;
+        displayedBookmarks = extractBookmarks(allDisplayed);
+        displayedFolders = extractFolders(allDisplayed);
+      });      
+    } else {
+      chrome.bookmarks.getChildren(folderId, (children) => {
+        // this segment is deliberately repeated - it needs to run inside this block for proper synchronicity
+        displayedBookmarks = extractBookmarks(children);
+        displayedFolders = extractFolders(children);
       });
-      return;
     }
-
-    chrome.bookmarks.getChildren(folderId, (children) => {
-      displayedBookmarks = children;
-    });
   }
 
   function _updateBreadcrumbs(folderId: string | null) {
@@ -77,11 +80,18 @@
 
     <div class="grid">
       {#each displayedBookmarks as item (item.id)}
-        {#if item.children}
-          <Folder title={item.title} on:click={() => loadFolder(item.id)} />
-        {:else if item.url}
-          <Bookmark title={item.title} url={item.url} />
-        {/if}
+        <Bookmark
+          title={item.title}
+          url={item.url}
+        />
+      {/each}
+    </div>
+    <div class="grid">
+      {#each displayedFolders as item (item.id)}
+        <Folder
+          onClick={() => loadFolder(item.id)}
+          title={item.title}
+        />
       {/each}
     </div>
   </div>

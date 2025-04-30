@@ -1,29 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { extractFavicon } from '@/services/extractFavicon';
 
   export let title: string;
-  export let url: string | undefined;
+  export let url: string;
 
   let faviconUrl: string;
-
-  // extract hostname once
-  let hostname = '';
-  if (url) {
-    try {
-      hostname = new URL(url).hostname;
-    } catch {
-      hostname = '';
-    }
-  }
   
-  onMount(() => {
-    if (hostname) {
-      // Google’s free favicon API, size=64
-      // faviconUrl = `https://www.google.com/s2/favicons?domain=${hostname}&sz=256`;
-      faviconUrl = `https://${hostname}/favicon.ico`;
-    } else {
-      faviconUrl = '';
-    }
+  onMount(async () => {
+    faviconUrl = await extractFavicon(url);
   });
 </script>
 
