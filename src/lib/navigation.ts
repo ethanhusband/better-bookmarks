@@ -19,8 +19,17 @@ export class Navigator {
 
   public loadFolder(folderId: string | null) {
     console.log('loading folder', folderId);
+    let title = '';
+    if (folderId !== null) {
+      const folder = get(this.displayedFolders).find((folder) => folder.id === folderId);
+      if (!folder) {
+        throw new Error('tried to load folder that should be in scope');
+      }
+      title = folder.title;
+    }
+
     this._updateDisplayed(folderId);
-    this._updateBreadcrumbs(folderId);
+    this._updateBreadcrumbs(folderId, title);
 
     this._selectedFolderId = folderId;
   }
@@ -56,21 +65,20 @@ export class Navigator {
     }
   }
 
-  private _updateBreadcrumbs(folderId: string | null) {
+  private _updateBreadcrumbs(folderId: string | null, title: string) {
     if (folderId === null) {
-      this.breadcrumbs.set([{ id: null, title: 'Your Bookmarks' }]);
+      this.breadcrumbs.set([]);
       return;
     }
 
     const currentBreadcrumbs = get(this.breadcrumbs);
     const i = currentBreadcrumbs.findIndex((c) => c.id === folderId);
-    if (i !== -1) {
+    if (i === -1) {
+      this.breadcrumbs.set([...currentBreadcrumbs, { id: folderId, title }]);
+    } else {
       const newBreadcrumbs = [...currentBreadcrumbs];
       newBreadcrumbs.slice(0, i + 1);
       this.breadcrumbs.set(newBreadcrumbs);
-    } else {
-      const title = currentBreadcrumbs.find((bookmark) => bookmark.id === folderId)?.title || '…';
-      this.breadcrumbs.set([...currentBreadcrumbs, { id: folderId, title }]);
     }
   }
 }

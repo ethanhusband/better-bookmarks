@@ -5,7 +5,7 @@
   import Bookmark from '@/components/Bookmark.svelte';
   import Breadcrumbs from '@/components/Breadcrumbs.svelte';
   import Folder from '@/components/Folder.svelte';
-  import { Navigator } from '@/services/navigation';
+  import { Navigator } from '@/lib/navigation';
 
   const navigator = new Navigator();
   const {

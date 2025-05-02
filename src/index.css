@@ -15,3 +15,9 @@
   src: url('/assets/InterVariable-Italic.woff2') format('woff2'),
        url('/assets/InterVariable-Italic.ttf')  format('ttf');
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
