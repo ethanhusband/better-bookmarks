@@ -37,13 +37,13 @@
   }
 
   .folder-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
 
   .folder-icon-wrapper {
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;

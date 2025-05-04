@@ -4,6 +4,7 @@
 
   export let breadcrumbs: Breadcrumb[] = [];
   export let onCrumbClick: (folderId: string | null) => void;
+  export let scale: number = 1;
 
   const MAX_VISIBLE = 2;
 
@@ -29,9 +30,10 @@
 </script>
 
 <nav
-  class="crumbs"
+  class="Breadcrumbs"
   class:dark={$isDarkMode}
   class:light={!$isDarkMode}
+  style="--scale: {scale}"
 >
   <button class="crumb" on:click={() => onCrumbClick(null)}>
     <img src="/assets/icon_256.png" alt="Better Bookmarks" class="root-icon" />
@@ -55,31 +57,28 @@
 </nav>
 
 <style>
-  .crumbs {
+  .Breadcrumbs {
     width: 100%;
     display: flex;
     align-items: center;
-    font-size: 1rem;
+    font-size: calc(16px * var(--scale));
     user-select: none;
     padding: 0.5rem 0.5rem;
-    background: var(--bg, #fff);
-    color: var(--fg, #333);
-    height: 35px;
+    background: transparent;
+    height: calc(35px * var(--scale));
   }
 
-  .crumbs.light {
-    background: #fff;
+  .Breadcrumbs.light {
     color: #333;
   }
 
-  .crumbs.dark {
-    background: #333;
+  .Breadcrumbs.dark {
     color: #eee;
   }
 
   .root-icon {
-    width: 24px;
-    height: 24px;
+    width: calc(24px * var(--scale));
+    height: calc(24px * var(--scale));
   }
 
   .crumb {
@@ -113,14 +112,14 @@
   }
 
   .crumb-title {
-    font-size: 16px;
     text-align: center;
+    margin: 0;
+    line-height: 1;
+    display: inline-block;
   }
 
   .separator {
     margin-right: 4px;
-    font-size: 24px;
-    line-height: 24px;
     text-align: center;
   }
 

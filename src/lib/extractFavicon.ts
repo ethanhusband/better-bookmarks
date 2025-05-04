@@ -1,4 +1,21 @@
+import { getCachedIcon, setCachedIcon } from "@/services/iconCache";
+
 export async function extractFavicon(url: string) {
+  const cachedIcon = await getCachedIcon(url);
+  if (cachedIcon) {
+    return cachedIcon;
+  }
+
+  const fetchedIcon = await fetchIconFromHtml(url);
+  if (fetchedIcon) {
+    setCachedIcon(url, fetchedIcon)
+    return fetchedIcon;
+  }
+  
+  return '/assets/placeholder-icon.png';
+}
+
+async function fetchIconFromHtml(url: string) {
   const html = await loadPageHtml(url);
 
   const iconHref = extractFaviconFromHtml(html, url);
@@ -6,8 +23,12 @@ export async function extractFavicon(url: string) {
     return iconHref;
   }
 
-  // fallback - just guess it's the relative favico.ico file
-  return `${new URL(url).origin}/favicon.ico`;
+  const fallbackUrl = `${new URL(url).origin}/favicon.ico`
+  if (await testImage(fallbackUrl)) {
+    return fallbackUrl;
+  }
+
+  return null;
 }
 
 function testImage(src: string): Promise<boolean> {

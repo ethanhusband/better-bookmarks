@@ -9,7 +9,7 @@
   }
 </script>
 
-<button on:click={onToggle} class="theme-toggle" style="--s: {scale}">
+<button on:click={onToggle} class="ThemeToggle" style="--s: {scale}">
   <div class="icon">{$isDarkMode ? '🌙' : '🌞'}</div>
   <label class="switch">
     <input
@@ -22,7 +22,7 @@
 </button>
 
 <style>
-  .theme-toggle {
+  .ThemeToggle {
     /* CSS var --s controls scale */
     --s: 1;
     display: flex;
