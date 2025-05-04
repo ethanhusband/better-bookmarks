@@ -16,7 +16,7 @@ bun i
 ```
 
 Then to run the extension:
-1. Do `vite dev`, which will continually generate the `dist` directory
+1. Run `vite build`, which will generate the `dist` directory
 2. Go into `chrome://extensions`, hit "Load Unpacked"
 3. Open to the `dist` directory
-4. Anytime you make changes, just hit refresh on the extension in `chrome://extensions`
+4. Anytime you make changes, rerun `vite build` and hit refresh on the extension in `chrome://extensions`
