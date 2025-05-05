@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { extractFavicon } from '@/lib/extractFavicon';
+    import GridIcon from './GridIcon.svelte';
 
   export let title: string;
   export let url: string;
@@ -13,7 +14,7 @@
 </script>
 
 <a href={url} target="_blank" rel="noopener noreferrer" class="bookmark-card">
-  <div class="icon-wrapper">
+  <GridIcon backgroundColor="#f7f7f7">
     {#if faviconUrl}
       <img class="icon" src={faviconUrl} alt="favicon for {title}" />
     {:else}
@@ -21,7 +22,7 @@
         <path d="M6 2L18 2C19.1 2 20 2.9 20 4L20 20C20 21.1 19.1 22 18 22L6 22C4.9 22 4 21.1 4 20L4 4C4 2.9 4.9 2 6 2ZM6 4L6 20L18 20L18 4L6 4Z" />
       </svg>
     {/if}
-  </div>
+  </GridIcon>
   <div class="bookmark-title">{title || url}</div>
 </a>
 
@@ -39,17 +40,6 @@
   .icon {
     width: 40px;
     height: 40px;
-  }
-
-  .icon-wrapper {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f7f7f7;
-    border-radius: 25px;
-    padding: 4px;
   }
 
   .bookmark-title {

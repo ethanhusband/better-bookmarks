@@ -1,12 +1,14 @@
 <script lang="ts">
+    import GridIcon from "./GridIcon.svelte";
+
   export let title: string;
   export let onClick: () => void;
 </script>
 
 <button class="folder-card" onclick={onClick}>
-  <div class="folder-icon-wrapper">
+  <GridIcon backgroundColor="rgba(0,0,0,0.25)" backgroundColorHover="rgba(0,0,0,0.4)">
     <img class="folder-icon" src="/assets/folder.png" alt="{title} Folder" />
-  </div>
+  </GridIcon>
   <div class="folder-title">{title}</div>
 </button>
 
@@ -26,7 +28,7 @@
     appearance: none;
   }
 
-    .folder-card {
+  .folder-card {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,17 +41,6 @@
   .folder-icon {
     width: 40px;
     height: 40px;
-  }
-
-  .folder-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f7f7f7;
-    border-radius: 25px;
-    padding: 4px;
   }
 
   .folder-title {

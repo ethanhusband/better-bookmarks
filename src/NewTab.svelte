@@ -2,9 +2,11 @@
   import { onMount } from 'svelte';
 
   import BackgroundImage from '@/components/BackgroundImage.svelte';
-  import Bookmark from '@/components/Bookmark.svelte';
+  
   import Breadcrumbs from '@/components/Breadcrumbs.svelte';
-  import Folder from '@/components/Folder.svelte';
+  import Grid from './components/Grid.svelte';
+  import GridBookmark from '@/components/GridBookmark.svelte';
+  import GridFolder from '@/components/GridFolder.svelte';
   import HorizontalLine from '@/components/HorizontalLine.svelte';
   import { Navigator } from '@/lib/navigation';
 
@@ -36,22 +38,20 @@
     />
 
     <div class="main">
-      <div class="grid">
+      <Grid>
         {#each $displayedBookmarks as item (item.id)}
-          <Bookmark
+          <GridBookmark
             title={item.title}
             url={item.url}
           />
         {/each}
-      </div>
-      <div class="grid">
         {#each $displayedFolders as item (item.id)}
-          <Folder
+          <GridFolder
             onClick={() => navigator.loadFolder(item.id)}
             title={item.title}
           />
         {/each}
-      </div>
+      </Grid>
     </div>
   </div>
 </BackgroundImage>
@@ -64,14 +64,5 @@
 
   .main {
     padding: 1rem 0rem;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 100px);   /* create as many 100px columns as will fit, then wrap */
-    grid-auto-rows: auto;
-    gap: 1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
   }
 </style>
