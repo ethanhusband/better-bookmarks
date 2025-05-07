@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { extractFavicon } from '@/lib/extractFavicon';
-    import GridIcon from './GridIcon.svelte';
+  import GridIcon from './GridIcon.svelte';
 
   export let title: string;
   export let url: string;

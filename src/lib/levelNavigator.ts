@@ -7,38 +7,36 @@ import {
   extractBookmarks,
   extractFolders
 } from '@/types/bookmarks';
-import type { Breadcrumb } from '@/types/breadcrumb';
 
+export class LevelNavigator {
+  public folder: FolderNode | null = null;
 
-export class Navigator {
-  private _selectedFolderId: string | null = null;
-
-  public breadcrumbs = writable<Breadcrumb[]>([]);
+  public breadcrumbs = writable<FolderNode[]>([]);
   public folderLevels = writable<Record<number, TreeNode[]>>({});
 
   public displayedBookmarks = writable<BookmarkNode[]>([]);
   public displayedFolders = writable<FolderNode[]>([]);
 
-  public loadFolder(folderId: string | null, depth: number) {
-    console.log('loading folder', folderId);
-    let title = '';
-    if (folderId !== null) {
-      const folder = get(this.displayedFolders).find((folder) => folder.id === folderId);
-      if (!folder) {
-        throw new Error('tried to load folder that should be in scope');
-      }
-      title = folder.title;
-    }
-
-    this._updateDisplayed(folderId);
-    this._updateBreadcrumbs(folderId, title);
-
-    this._selectedFolderId = folderId;
+  constructor(folderNode: FolderNode | null) {
+    this.loadFolder(folderNode);    
   }
 
-  private _updateDisplayed(folderId: string | null) {
+  public loadFolder(folderNode: FolderNode | null) {
+    console.log('loading folder', folderNode);
+    let title = 'Your Bookmarks';
+    if (folderNode !== null) {
+      title = folderNode.title;
+    }
+
+    this._updateDisplayed(folderNode);
+    this._updateBreadcrumbs(folderNode);
+
+    this.folder = folderNode;
+  }
+
+  private _updateDisplayed(folderNode: FolderNode | null) {
     let allDisplayed: TreeNode[] = [];
-    if (folderId === null) {
+    if (folderNode === null) {
       chrome.bookmarks.getTree((tree) => {
         // chrome by default will return [bookmarksBar, otherBookmarks]
         // as the root children - we need to flatten these to get the actual root children.
@@ -59,7 +57,7 @@ export class Navigator {
         this.displayedFolders.set(extractFolders(allDisplayed));
       });      
     } else {
-      chrome.bookmarks.getChildren(folderId, (children) => {
+      chrome.bookmarks.getChildren(folderNode.id, (children) => {
         // this segment is deliberately repeated - it needs to run inside this block for proper synchronicity
         this.displayedBookmarks.set(extractBookmarks(children));
         this.displayedFolders.set(extractFolders(children));
@@ -67,16 +65,16 @@ export class Navigator {
     }
   }
 
-  private _updateBreadcrumbs(folderId: string | null, title: string) {
-    if (folderId === null) {
+  private _updateBreadcrumbs(folderNode: FolderNode | null) {
+    if (folderNode === null) {
       this.breadcrumbs.set([]);
       return;
     }
 
     const currentBreadcrumbs = get(this.breadcrumbs);
-    const i = currentBreadcrumbs.findIndex((c) => c.id === folderId);
+    const i = currentBreadcrumbs.findIndex((c) => c.id === folderNode.id);
     if (i === -1) {
-      this.breadcrumbs.set([...currentBreadcrumbs, { id: folderId, title }]);
+      this.breadcrumbs.set([...currentBreadcrumbs, folderNode]);
     } else {
       const newBreadcrumbs = [...currentBreadcrumbs];
       newBreadcrumbs.slice(0, i + 1);
@@ -84,4 +82,3 @@ export class Navigator {
     }
   }
 }
-

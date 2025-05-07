@@ -1,25 +1,20 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-
-  import { Navigator } from "@/lib/navigation";
+  import { LevelNavigator } from "@/lib/LevelNavigator";
   import { isDarkMode } from '@/services/theme';
   import Breadcrumbs from "@/components/Breadcrumbs.svelte";
   import List from "@/components/List.svelte";
   import ListBookmark from "@/components/ListBookmark.svelte";
   import ListFolder from "@/components/ListFolder.svelte";
-    import ThemeToggle from "./components/ThemeToggle.svelte";
-    import HorizontalLine from "./components/HorizontalLine.svelte";
+  import ThemeToggle from "./components/ThemeToggle.svelte";
+  import HorizontalLine from "./components/HorizontalLine.svelte";
+    import { type FolderNode } from "./types/bookmarks";
 
-  const navigator = new Navigator();
+  const navigator = new LevelNavigator(null);
   const {
     breadcrumbs,
     displayedBookmarks,
     displayedFolders,
   } = navigator;
-
-  onMount(() => {
-    navigator.loadFolder(null);
-  });
 </script>
 
 <div
@@ -32,7 +27,7 @@
   <div class="header">
     <Breadcrumbs
       breadcrumbs={$breadcrumbs}
-      onCrumbClick={(folderId: string | null) => navigator.loadFolder(folderId)}
+      onCrumbClick={(folderNode: FolderNode | null) => navigator.loadFolder(folderNode)}
     />
     <div class="header-left">
       <ThemeToggle scale={0.75}/>
@@ -55,7 +50,7 @@
     {/each}
     {#each $displayedFolders as item (item.id)}
       <ListFolder
-        onClick={() => navigator.loadFolder(item.id)}
+        onClick={() => navigator.loadFolder(item)}
         title={item.title}
       />
     {/each}

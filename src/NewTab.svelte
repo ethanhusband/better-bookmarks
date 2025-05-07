@@ -1,58 +1,36 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { get, writable } from 'svelte/store';
 
   import BackgroundImage from '@/components/BackgroundImage.svelte';
-  
-  import Breadcrumbs from '@/components/Breadcrumbs.svelte';
-  import Grid from './components/Grid.svelte';
-  import GridBookmark from '@/components/GridBookmark.svelte';
-  import GridFolder from '@/components/GridFolder.svelte';
-  import HorizontalLine from '@/components/HorizontalLine.svelte';
-  import { Navigator } from '@/lib/navigation';
+  import { LevelNavigator } from '@/lib/levelNavigator';
+  import FolderLevel from '@/containers/FolderLevel.svelte';
+  import type { FolderNode } from './types/bookmarks';
 
-  const navigator = new Navigator();
-  const {
-    breadcrumbs,
-    displayedBookmarks,
-    displayedFolders,
-  } = navigator;
+  let navigatorLevels = writable<LevelNavigator[]>([]);
+
+  function loadLevel(folderNode: FolderNode | null, fromDepth: number) {
+    const navigator = new LevelNavigator(folderNode);
+    const depth = fromDepth + 1;
+
+    const newNavigatorLevels = [ ...get(navigatorLevels)];
+    newNavigatorLevels.splice(depth);
+    newNavigatorLevels.push(navigator);
+    navigatorLevels.set(newNavigatorLevels);
+  }
 
   onMount(() => {
-    navigator.loadFolder(null);
+    // initialise root children and initialise as zeroth level
+    const rootlevelNavigator = new LevelNavigator(null);
+    navigatorLevels.set([...get(navigatorLevels), rootlevelNavigator]);
   });
 </script>
 
 <BackgroundImage>
   <div class="NewTab">
-    <Breadcrumbs
-      breadcrumbs={$breadcrumbs}
-      onCrumbClick={(folderId: string | null) => navigator.loadFolder(folderId)}
-      scale={1.5}
-    />
-
-    <HorizontalLine
-      color={'white'}
-      thickness={2}
-      marginY={8}
-      marginX={2}
-    />
-
-    <div class="main">
-      <Grid>
-        {#each $displayedBookmarks as item (item.id)}
-          <GridBookmark
-            title={item.title}
-            url={item.url}
-          />
-        {/each}
-        {#each $displayedFolders as item (item.id)}
-          <GridFolder
-            onClick={() => navigator.loadFolder(item.id)}
-            title={item.title}
-          />
-        {/each}
-      </Grid>
-    </div>
+    {#each $navigatorLevels as navigator, depth (navigator.folder)}
+      <FolderLevel levelNavigator={navigator} loadLevel={loadLevel} depth={depth} />
+    {/each}
   </div>
 </BackgroundImage>
 
@@ -60,9 +38,5 @@
   .NewTab {
     flex: 1;
     padding: 1rem;
-  }
-
-  .main {
-    padding: 1rem 0rem;
   }
 </style>

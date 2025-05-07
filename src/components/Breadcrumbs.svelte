@@ -1,30 +1,38 @@
 <script lang="ts">
+    import { parseBreadcrumb } from "@/lib/parseBreadcrumb";
   import { isDarkMode } from "@/services/theme";
+  import type { FolderNode } from "@/types/bookmarks";
   import { type Breadcrumb } from "@/types/breadcrumb";
 
-  export let breadcrumbs: Breadcrumb[] = [];
-  export let onCrumbClick: (folderId: string | null) => void;
+  export let breadcrumbs: FolderNode[] = [];
+  export let rawCrumbs: Breadcrumb[] | undefined = undefined;
+  export let onCrumbClick: (folderNode: FolderNode | null) => void;
   export let scale: number = 1;
 
   const MAX_VISIBLE = 2;
 
-  $: displayCrumbs = (() => {
-    console.log(breadcrumbs);
+  $: displayCrumbs = ((): Breadcrumb[] => {
+    if (rawCrumbs) {
+      return rawCrumbs;
+    }
 
+    const prefixCrumb = { id: null, title: 'Your Bookmarks', node: null };
     if (breadcrumbs.length <= MAX_VISIBLE) {
       // show all (or root will be handled below when length === 0)
       console.log('returning breadcrumbs raw');
-      return breadcrumbs.length
-        ? breadcrumbs
-        : [{ id: null, title: 'Your Bookmarks' }];
+      return [
+        prefixCrumb, 
+        ...breadcrumbs.map((breadcrumb) => parseBreadcrumb(breadcrumb))
+      ]
     }
 
     const first = breadcrumbs[0];
     const last = breadcrumbs[breadcrumbs.length - 1];
     return [
-      first,
-      { id: null, title: '…' },
-      last
+      prefixCrumb,
+      parseBreadcrumb(first),
+      { id: null, title: '…', node: breadcrumbs[breadcrumbs.length - MAX_VISIBLE] },
+      parseBreadcrumb(last)
     ];
   })();
 </script>
@@ -50,7 +58,7 @@
 
     <button
       class="crumb {crumb.title === '…' ? 'ellipsis' : ''} {i === displayCrumbs.length - 1 ? 'current' : ''}"
-      on:click={() => crumb.title !== '…' && onCrumbClick(crumb.id)}>
+      on:click={() => crumb.title !== '…' && onCrumbClick(crumb.node)}>
       <p class="crumb-title">{crumb.title}</p>
     </button>
   {/each}
