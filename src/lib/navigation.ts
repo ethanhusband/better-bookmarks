@@ -1,7 +1,7 @@
 import { writable, get } from 'svelte/store';
 
 import {
-  type BookmarkTreeNode,
+  type TreeNode,
   type BookmarkNode,
   type FolderNode,
   extractBookmarks,
@@ -14,10 +14,12 @@ export class Navigator {
   private _selectedFolderId: string | null = null;
 
   public breadcrumbs = writable<Breadcrumb[]>([]);
+  public folderLevels = writable<Record<number, TreeNode[]>>({});
+
   public displayedBookmarks = writable<BookmarkNode[]>([]);
   public displayedFolders = writable<FolderNode[]>([]);
 
-  public loadFolder(folderId: string | null) {
+  public loadFolder(folderId: string | null, depth: number) {
     console.log('loading folder', folderId);
     let title = '';
     if (folderId !== null) {
@@ -35,7 +37,7 @@ export class Navigator {
   }
 
   private _updateDisplayed(folderId: string | null) {
-    let allDisplayed: BookmarkTreeNode[] = [];
+    let allDisplayed: TreeNode[] = [];
     if (folderId === null) {
       chrome.bookmarks.getTree((tree) => {
         // chrome by default will return [bookmarksBar, otherBookmarks]

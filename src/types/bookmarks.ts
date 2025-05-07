@@ -1,21 +1,21 @@
-export type BookmarkTreeNode = chrome.bookmarks.BookmarkTreeNode;
+export type TreeNode = chrome.bookmarks.BookmarkTreeNode;
 
-export type BookmarkNode = BookmarkTreeNode & { url: string};
-export type FolderNode = BookmarkTreeNode & { children: BookmarkTreeNode[] };
+export type BookmarkNode = TreeNode & { url: string};
+export type FolderNode = TreeNode & { children: TreeNode[] };
 
 
-export function extractBookmarks(tree: BookmarkTreeNode[]) {
+export function extractBookmarks(tree: TreeNode[]) {
   return tree.filter((node) => isBookmarkNode(node));
 }
 
-export function extractFolders(tree: BookmarkTreeNode[]) {
+export function extractFolders(tree: TreeNode[]) {
   return tree.filter((node) => isFolderNode(node));
 }
 
-export function isBookmarkNode(node: BookmarkTreeNode): node is BookmarkNode {
+export function isBookmarkNode(node: TreeNode): node is BookmarkNode {
   return !!node.url;
 }
 
-export function isFolderNode(node: BookmarkTreeNode): node is FolderNode {
+export function isFolderNode(node: TreeNode): node is FolderNode {
   return Array.isArray(node.children);
 }
