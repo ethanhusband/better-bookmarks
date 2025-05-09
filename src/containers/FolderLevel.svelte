@@ -1,15 +1,16 @@
 <script lang="ts">
-  import Breadcrumbs from "@/components/Breadcrumbs.svelte";
   import HorizontalLine from "@/components/HorizontalLine.svelte";
   import Grid from "@/components/Grid.svelte";
   import GridBookmark from "@/components/GridBookmark.svelte";
   import GridFolder from "@/components/GridFolder.svelte";
   import type { LevelNavigator } from "@/lib/levelNavigator";
-    import type { FolderNode } from "@/types/bookmarks";
-    import { parseBreadcrumb } from "@/lib/parseBreadcrumb";
-    import LevelTitle from "@/components/LevelTitle.svelte";
+  import type { FolderNode } from "@/types/bookmarks";
+  import LevelTitle from "@/components/LevelTitle.svelte";
+  import PinOpen from "@/components/PinOpen.svelte";
+  import type { ID } from "@/types/abstract";
 
   export let depth: number;
+  export let path: ID[];
   export let levelNavigator: LevelNavigator;
   export let loadLevel: (folderNode: FolderNode | null, fromDepth: number) => void;
 
@@ -21,11 +22,19 @@
 </script>
 
 <div class="FolderLevel">
-  <LevelTitle
-    iconUrl={depth === 0 ? "/assets/icon_256.png" : "/assets/folder.png"}
-    title={folder ? folder.title : "Your Bookmarks"}
-    iconScale={depth === 0 ? 1 : 0.9}
-  />
+  <div class="header">
+    <LevelTitle
+      isRoot={depth === 0}
+      iconUrl={depth === 0 ? "/assets/icon_256.png" : "/assets/folder.png"}
+      title={folder ? folder.title : "Your Bookmarks"}
+      iconScale={depth === 0 ? 1 : 0.9}
+    />
+    {#if folder}
+      <div class="header-left">
+        <PinOpen path={path} title={folder.title} />
+      </div>
+    {/if}
+  </div>
 
   <HorizontalLine
     color={'white'}
@@ -57,7 +66,22 @@
     flex: 1
   }
 
+  .header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .header-left {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+
   .main {
-      padding: 1rem 0rem;
-    }
+    padding: 1rem 0rem;
+  }
 </style>

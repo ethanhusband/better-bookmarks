@@ -1,6 +1,8 @@
 <script lang="ts">
   import { isDarkMode } from "@/services/theme";
 
+  // a lot of these props could be inferred from isRoot
+  export let isRoot: boolean;
   export let iconScale: number = 1;
   export let iconUrl: string;
   export let scale: number = 1;
@@ -13,6 +15,9 @@
   class:light={!$isDarkMode}
   style="--scale: {scale}; --icon_scale: {iconScale}"
 >
+  {#if !isRoot}
+    <p class="title">{">"}</p>
+  {/if}
   <img src={iconUrl} alt={title + " Icon"} class="icon" />
   <p class="title">{title}</p>
 </div>
@@ -22,10 +27,9 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 12px;
     align-items: center;
     user-select: none;
-    padding: 0.5rem 0.5rem;
     background: transparent;
     height: calc(50px * var(--scale));
   }
