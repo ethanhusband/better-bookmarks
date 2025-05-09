@@ -13,7 +13,7 @@
   });
 </script>
 
-<a href={url} target="_blank" rel="noopener noreferrer" class="bookmark-card">
+<a href={url} rel="noopener noreferrer" class="bookmark-card">
   <GridIcon backgroundColor="#f7f7f7">
     {#if faviconUrl}
       <img class="icon" src={faviconUrl} alt="favicon for {title}" />

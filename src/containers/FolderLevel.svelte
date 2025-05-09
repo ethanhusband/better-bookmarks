@@ -6,8 +6,9 @@
   import type { LevelNavigator } from "@/lib/levelNavigator";
   import type { FolderNode } from "@/types/bookmarks";
   import LevelTitle from "@/components/LevelTitle.svelte";
-  import PinOpen from "@/components/PinOpen.svelte";
+  import PinOpen from "@/components/PinButton.svelte";
   import type { ID } from "@/types/abstract";
+    import BackgroundButton from "@/components/BackgroundButton.svelte";
 
   export let depth: number;
   export let path: ID[];
@@ -29,11 +30,13 @@
       title={folder ? folder.title : "Your Bookmarks"}
       iconScale={depth === 0 ? 1 : 0.9}
     />
-    {#if folder}
-      <div class="header-left">
+    <div class="header-left">
+      {#if folder}
         <PinOpen path={path} title={folder.title} />
-      </div>
-    {/if}
+      {:else}
+        <BackgroundButton />
+      {/if}
+    </div>
   </div>
 
   <HorizontalLine

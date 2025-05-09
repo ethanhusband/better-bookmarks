@@ -1,10 +1,16 @@
 <script lang="ts">
-  export let src: string = "/assets/default_bg.jpg";
-  export let alt: string = "Default Background";
+  import { backgroundImageUrl, getBackgroundImage } from "@/services/backgroundImage";
+  import { onMount } from "svelte";
+
+  onMount(() => getBackgroundImage().then((imageUrl) => {
+    if (imageUrl) {
+      backgroundImageUrl.set(imageUrl)
+    }
+  }))
 </script>
 
 <div class="background-container">
-  <img src={src} alt={alt} class="background-image" />
+  <img src={$backgroundImageUrl} alt="Background" class="background-image" />
   <div class="foreground-content">
     <slot></slot>
   </div>

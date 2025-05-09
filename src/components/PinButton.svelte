@@ -16,11 +16,10 @@
   onClick={() => setPinPath(active ? ['root'] : path)}
 >
   <div
-    class="PinOpen"
+    class="PinButton"
     style="
-      background-color: {active ? '#1976d2' : 'white'};
-      color: {active ? 'white' : 'black'};
-      border: 1px solid {active ? 'black' : 'rgba(0,0,0,0.5)'};
+      --bg: {active ? '#1976d2' : 'rgba(0,0,0,0.5)'};
+      {active ? 'border: 1px solid white;' : ''}
     "
   >
     {#if active} 
@@ -36,13 +35,19 @@
 </ActionButton>
 
 <style>
-  .PinOpen {
+  .PinButton {
     height: 40px;
     padding: 0px 1rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-radius: 10px;
+    color: white;
+    background: var(--bg);
+  }
+
+  .PinButton:hover {
+    background: #1976d2;
   }
 
   .pin-text {

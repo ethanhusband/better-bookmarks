@@ -1,5 +1,6 @@
 <script lang="ts">
   import { isDarkMode } from "@/services/theme";
+    import Chevron from "./Chevron.svelte";
 
   // a lot of these props could be inferred from isRoot
   export let isRoot: boolean;
@@ -16,7 +17,7 @@
   style="--scale: {scale}; --icon_scale: {iconScale}"
 >
   {#if !isRoot}
-    <p class="title">{">"}</p>
+    <Chevron />
   {/if}
   <img src={iconUrl} alt={title + " Icon"} class="icon" />
   <p class="title">{title}</p>
