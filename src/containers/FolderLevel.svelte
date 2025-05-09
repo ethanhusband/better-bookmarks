@@ -7,6 +7,7 @@
   import type { LevelNavigator } from "@/lib/levelNavigator";
     import type { FolderNode } from "@/types/bookmarks";
     import { parseBreadcrumb } from "@/lib/parseBreadcrumb";
+    import LevelTitle from "@/components/LevelTitle.svelte";
 
   export let depth: number;
   export let levelNavigator: LevelNavigator;
@@ -20,11 +21,10 @@
 </script>
 
 <div class="FolderLevel">
-  <Breadcrumbs
-    breadcrumbs={$displayedFolders}
-    rawCrumbs={[parseBreadcrumb(folder)]}
-    onCrumbClick={(folderNode: FolderNode | null) => loadLevel(folderNode, depth)}
-    scale={1.5}
+  <LevelTitle
+    iconUrl={depth === 0 ? "/assets/icon_256.png" : "/assets/folder.png"}
+    title={folder ? folder.title : "Your Bookmarks"}
+    iconScale={depth === 0 ? 1 : 0.9}
   />
 
   <HorizontalLine

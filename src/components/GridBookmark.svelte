@@ -38,8 +38,8 @@
   }
 
   .icon {
-    width: 40px;
-    height: 40px;
+    max-width: 40px;
+    max-height: 40px;
   }
 
   .bookmark-title {

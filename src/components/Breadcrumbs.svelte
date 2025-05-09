@@ -1,21 +1,16 @@
 <script lang="ts">
-    import { parseBreadcrumb } from "@/lib/parseBreadcrumb";
+  import { parseBreadcrumb } from "@/lib/parseBreadcrumb";
   import { isDarkMode } from "@/services/theme";
   import type { FolderNode } from "@/types/bookmarks";
   import { type Breadcrumb } from "@/types/breadcrumb";
 
   export let breadcrumbs: FolderNode[] = [];
-  export let rawCrumbs: Breadcrumb[] | undefined = undefined;
   export let onCrumbClick: (folderNode: FolderNode | null) => void;
   export let scale: number = 1;
 
   const MAX_VISIBLE = 2;
 
   $: displayCrumbs = ((): Breadcrumb[] => {
-    if (rawCrumbs) {
-      return rawCrumbs;
-    }
-
     const prefixCrumb = { id: null, title: 'Your Bookmarks', node: null };
     if (breadcrumbs.length <= MAX_VISIBLE) {
       // show all (or root will be handled below when length === 0)
@@ -47,21 +42,23 @@
     <img src="/assets/icon_256.png" alt="Better Bookmarks" class="root-icon" />
   </button>
 
-  {#each displayCrumbs as crumb, i}
-    <span
-      class="separator"
-      class:dark={$isDarkMode}
-      class:light={!$isDarkMode}
-    >
-      ›
-    </span>
+  <div class="crumbs">
+    {#each displayCrumbs as crumb, i}
+      <span
+        class="separator"
+        class:dark={$isDarkMode}
+        class:light={!$isDarkMode}
+      >
+        ›
+      </span>
 
-    <button
-      class="crumb {crumb.title === '…' ? 'ellipsis' : ''} {i === displayCrumbs.length - 1 ? 'current' : ''}"
-      on:click={() => crumb.title !== '…' && onCrumbClick(crumb.node)}>
-      <p class="crumb-title">{crumb.title}</p>
-    </button>
-  {/each}
+      <button
+        class="crumb {crumb.title === '…' ? 'ellipsis' : ''} {i === displayCrumbs.length - 1 ? 'current' : ''}"
+        on:click={() => crumb.title !== '…' && onCrumbClick(crumb.node)}>
+        <p class="crumb-title">{crumb.title}</p>
+      </button>
+    {/each}
+  </div>
 </nav>
 
 <style>
@@ -87,6 +84,12 @@
   .root-icon {
     width: calc(24px * var(--scale));
     height: calc(24px * var(--scale));
+  }
+
+  .crumbs {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
   }
 
   .crumb {
@@ -127,7 +130,6 @@
   }
 
   .separator {
-    margin-right: 4px;
     text-align: center;
   }
 

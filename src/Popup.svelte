@@ -7,7 +7,7 @@
   import ListFolder from "@/components/ListFolder.svelte";
   import ThemeToggle from "./components/ThemeToggle.svelte";
   import HorizontalLine from "./components/HorizontalLine.svelte";
-    import { type FolderNode } from "./types/bookmarks";
+  import { type FolderNode } from "./types/bookmarks";
 
   const navigator = new LevelNavigator(null);
   const {
