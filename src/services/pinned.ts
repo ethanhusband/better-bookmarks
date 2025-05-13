@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 import type { ID } from "@/types/abstract";
-import { localStorageGet, localStorageSet } from "./localStorage";
+import { localStorageGet, localStorageSet } from "@/lib/localStorage";
 
 const STORAGE_KEY = 'pin-path';
 

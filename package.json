@@ -19,5 +19,8 @@
     "vite": "^6.3.1",
     "vite-plugin-chrome-extension": "^0.0.7",
     "vite-plugin-static-copy": "^2.3.1"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1"
   }
 }

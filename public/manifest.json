@@ -6,7 +6,8 @@
   "version": "0.1.0",
   "permissions": [
     "bookmarks",
-    "storage"
+    "storage",
+    "management"
   ],
   "icons": {
     "16": "icons/icon_16.png",

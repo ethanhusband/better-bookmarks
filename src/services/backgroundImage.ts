@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-import { localStorageGet, localStorageSet } from "./localStorage";
+import { localStorageGet, localStorageSet } from "@/lib/localStorage";
 
 const STORAGE_KEY = 'background-image';
 

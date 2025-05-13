@@ -8,7 +8,9 @@
   import LevelTitle from "@/components/LevelTitle.svelte";
   import PinOpen from "@/components/PinButton.svelte";
   import type { ID } from "@/types/abstract";
-    import BackgroundButton from "@/components/BackgroundButton.svelte";
+  import ExportButton from "@/components/ExportButton.svelte";
+  import ImportButton from "@/components/ImportButton.svelte";
+  import SetBackgroundButton from "@/components/SetBackgroundButton.svelte";
 
   export let depth: number;
   export let path: ID[];
@@ -33,8 +35,10 @@
     <div class="header-left">
       {#if folder}
         <PinOpen path={path} title={folder.title} />
+        <ExportButton folderId={folder.id} />
       {:else}
-        <BackgroundButton />
+        <SetBackgroundButton />
+        <ImportButton />
       {/if}
     </div>
   </div>

@@ -22,7 +22,7 @@
 <ActionButton
   onClick={() => null}
 >
-  <label class="BackgroundButton">
+  <label class="SetBackgroundButton">
     <img
       src="/assets/set-wallpaper.svg"
       alt="Wallpaper Icon"
@@ -41,7 +41,7 @@
 </ActionButton>
 
 <style>
-  .BackgroundButton {
+  .SetBackgroundButton {
     cursor: pointer;
     height: 40px;
     padding: 0px 1rem;
@@ -54,7 +54,7 @@
     color: white;
   }
 
-  .BackgroundButton:hover {
+  .SetBackgroundButton:hover {
     background: #1976d2;
   }
 

@@ -1,4 +1,4 @@
-import { syncStorageGet, syncStorageSet } from "./syncStorage";
+import { syncStorageGet, syncStorageSet } from "@/lib/syncStorage";
 
 export async function getCachedIcon(bookmarkUrl: string): Promise<string | undefined> {
   const cacheKey = `bookmark-icon-${bookmarkUrl}`;

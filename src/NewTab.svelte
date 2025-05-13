@@ -21,7 +21,7 @@
     navigatorLevels.set(newNavigatorLevels);
   }
 
-  onMount(() => {
+  function initNavigator() {
     // initialise root level bookmarks
     const rootlevelNavigator = new LevelNavigator(null);
 
@@ -48,7 +48,11 @@
       }
 
       navigatorLevels.set(initialNavigatorLevels);
-    })
+    });
+  }
+
+  onMount(() => {
+    initNavigator();
   });
 </script>
 
