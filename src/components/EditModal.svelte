@@ -4,6 +4,11 @@
 
   export let node: TreeNode;
 
+  async function onDelete() {
+    await handleDelete(node);
+    window.location.reload(); // TODO improve this solution
+  }
+
   // local editable copies
   let editTitle = node.title;
   let editUrl = node.url;
@@ -55,7 +60,7 @@
       {/if}
 
       <div class="buttons">
-        <button type="button" class="delete" on:click={() => handleDelete(node)}>
+        <button type="button" class="delete" on:click={onDelete}>
           {isFolderNode(node) ? "Delete Folder" : "Delete Bookmark"}
         </button>
         <button type="button" class="save" on:click={() => handleSave(node, { title: editTitle, url: editUrl })}>Save</button>

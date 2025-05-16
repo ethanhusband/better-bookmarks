@@ -8,6 +8,7 @@
     if (file) {
       try {
         await importFolderFromZip(file);
+        window.location.reload(); // TODO improve this solution
       } catch (error) {
         console.error(`failed to import ${error}`);
       }

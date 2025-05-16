@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { get, writable } from 'svelte/store';
+  import { onMount, setContext } from 'svelte';
+  import { get } from 'svelte/store';
 
   import BackgroundImage from '@/components/BackgroundImage.svelte';
   import EditModal from '@/components/EditModal.svelte';
@@ -11,19 +11,19 @@
   import { range } from '@/lib/range';
   import { showModal } from './services/edit';
 
-  let navigatorLevels = writable<LevelNavigator[]>([]);
+  let navigatorLevels: LevelNavigator[] = [];
 
   function loadLevel(folderNode: FolderNode | null, fromDepth: number) {
     const navigator = new LevelNavigator(folderNode);
     const depth = fromDepth + 1;
 
-    const newNavigatorLevels = [ ...get(navigatorLevels)];
+    const newNavigatorLevels = [ ...navigatorLevels];
     newNavigatorLevels.splice(depth);
     newNavigatorLevels.push(navigator);
-    navigatorLevels.set(newNavigatorLevels);
+    navigatorLevels = newNavigatorLevels;
   }
 
-  function initNavigator() {
+  function setupNavigator() {
     // initialise root level bookmarks
     const rootlevelNavigator = new LevelNavigator(null);
 
@@ -41,7 +41,7 @@
           const pinnedPathFolder = get(initialNavigatorLevels[i].displayedFolders).find((folder) => folder.id === id);
           if (!pinnedPathFolder) {
             console.warn('could not find pinned path folder', id, 'in', get(initialNavigatorLevels[i].displayedFolders));
-            navigatorLevels.set(initialNavigatorLevels);
+            navigatorLevels = initialNavigatorLevels;
             return;
           }
 
@@ -49,23 +49,23 @@
         })
       }
 
-      navigatorLevels.set(initialNavigatorLevels);
+      navigatorLevels = initialNavigatorLevels;
     });
   }
 
   onMount(() => {
-    initNavigator();
+    setupNavigator();
   });
 </script>
 
 <BackgroundImage>
   <div class="NewTab">
-    {#each $navigatorLevels as navigator, depth (navigator.folder)}
+    {#each navigatorLevels as navigator, depth (navigator.folder)}
       <FolderLevel
         levelNavigator={navigator}
         loadLevel={loadLevel}
         depth={depth}
-        path={range(0,depth).map((num) => $navigatorLevels[num].folder ? $navigatorLevels[num].folder.id : 'root')}
+        path={range(0,depth).map((num) => navigatorLevels[num].folder ? navigatorLevels[num].folder.id : 'root')}
       />
     {/each}
   </div>
