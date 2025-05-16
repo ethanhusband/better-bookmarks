@@ -1,15 +1,21 @@
 <script lang="ts">
-    import GridIcon from "./GridIcon.svelte";
+  import GridIcon from "@/components/GridIcon.svelte";
+    import { openModal } from "@/services/edit";
+  import type { FolderNode } from '@/types/bookmarks';
 
-  export let title: string;
+  export let folderNode: FolderNode;
   export let onClick: () => void;
 </script>
 
-<button class="folder-card" onclick={onClick}>
+<button
+  class="folder-card"
+  on:click={onClick}
+  on:contextmenu|preventDefault={() => openModal(folderNode)}
+>
   <GridIcon backgroundColor="rgba(0,0,0,0.25)" backgroundColorHover="rgba(0,0,0,0.4)">
-    <img class="folder-icon" src="/assets/folder.png" alt="{title} Folder" />
+    <img class="folder-icon" src="/assets/folder.png" alt="{folderNode.title} Folder" />
   </GridIcon>
-  <div class="folder-title">{title}</div>
+  <div class="folder-title">{folderNode.title}</div>
 </button>
 
 <style>

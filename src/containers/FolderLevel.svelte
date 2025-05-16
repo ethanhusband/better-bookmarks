@@ -54,14 +54,13 @@
     <Grid>
       {#each $displayedBookmarks as item (item.id)}
         <GridBookmark
-          title={item.title}
-          url={item.url}
+          bookmarkNode={item}
         />
       {/each}
       {#each $displayedFolders as item (item.id)}
         <GridFolder
           onClick={() => loadLevel(item, depth)}
-          title={item.title}
+          folderNode={item}
         />
       {/each}
     </Grid>
