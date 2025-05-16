@@ -5,6 +5,11 @@
   export let node: TreeNode;
 
   async function onDelete() {
+    const confirmed = window.confirm(`Are you sure you want to delete ${node.title}?`);
+    if (!confirmed) {
+      return;
+    }
+
     await handleDelete(node);
     window.location.reload(); // TODO improve this solution
   }
