@@ -3,7 +3,7 @@
   "name": "Better Bookmarks",
   "description": "A smarter way to organize your Chrome bookmarks.",
   "minimum_chrome_version": "90.0.0.0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "permissions": [
     "bookmarks",
     "storage",
