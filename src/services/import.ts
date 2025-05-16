@@ -23,15 +23,12 @@ export async function importFolderFromZip(file: File) {
     });
   }
 
-  // recursive function to walk the tree
   async function recurse(
     node: chrome.bookmarks.BookmarkTreeNode,
     parentId: string
   ) {
-    // 1) create the folder itself
     const folder = await createNode(node.title, undefined, parentId);
 
-    // 2) for each child, either recurse (folder) or create a bookmark
     if (node.children) {
       for (const child of node.children) {
         if (child.children) {
@@ -43,6 +40,5 @@ export async function importFolderFromZip(file: File) {
     }
   }
 
-  // 3) kick off under the Bookmarks Bar (id="1")
   await recurse(root, '1');
 }

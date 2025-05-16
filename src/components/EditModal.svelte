@@ -14,6 +14,11 @@
     window.location.reload(); // TODO improve this solution
   }
 
+  async function onSave() {
+    await handleSave(node, { title: editTitle, url: editUrl })
+    window.location.reload(); // TODO improve this solution
+  }
+
   // local editable copies
   let editTitle = node.title;
   let editUrl = node.url;
@@ -68,7 +73,7 @@
         <button type="button" class="delete" on:click={onDelete}>
           {isFolderNode(node) ? "Delete Folder" : "Delete Bookmark"}
         </button>
-        <button type="button" class="save" on:click={() => handleSave(node, { title: editTitle, url: editUrl })}>Save</button>
+        <button type="button" class="save" on:click={onSave}>Save</button>
         <button type="button" on:click={closeModal}>Cancel</button>
       </div>
     </div>
