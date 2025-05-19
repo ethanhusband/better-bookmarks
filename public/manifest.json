@@ -4,6 +4,7 @@
   "description": "A smarter way to organize your Chrome bookmarks.",
   "minimum_chrome_version": "90.0.0.0",
   "version": "0.2.1",
+  "license": "GPL-3.0-or-later",
   "permissions": [
     "bookmarks",
     "storage"
