@@ -35,20 +35,13 @@
     height: calc(50px * var(--scale));
   }
 
-  .LevelTitle.light {
-    color: #333;
-  }
-
-  .LevelTitle.dark {
-    color: #eee;
-  }
-
   .icon {
     width: calc(48px * var(--icon_scale));
     height: calc(48px * var(--icon_scale));
   }
 
   .title {
+    color: white;
     font-size: calc(32px * var(--scale));
     font-weight: bold;
     text-align: center;
