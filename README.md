@@ -7,6 +7,8 @@
 
 > Lightweight chrome extension to improve bookmark management and sharable bookmarks
 
+![better-bookmarks](https://github.com/user-attachments/assets/8a36de08-1c4c-418e-a033-d049a91f1e04)
+
 ## Summary
 
 How often do you find yourself opening a new tab, only to either open a bookmark or search in the top bar? 
