@@ -7,14 +7,15 @@
 
 > Lightweight chrome extension to improve bookmark management and sharable bookmarks
 
-![better-bookmarks](https://github.com/user-attachments/assets/8a36de08-1c4c-418e-a033-d049a91f1e04)
-
 ## Summary
 
 How often do you find yourself opening a new tab, only to either open a bookmark or search in the top bar? 
 The default search bar that typically fills that New Tab space is some of the most wasted screen real estate in your day.
 
 Better Bookmarks overrides the default New Tab screen, providing a cleaner looking bookmark navigator more reminiscent of an App Store - making use of that otherwise wasted New Tab space. When opening a new tab to access bookmarks, you no longer have to misclick and then click those tiny links at the top of your screen.
+
+![better-bookmarks](https://github.com/user-attachments/assets/8a36de08-1c4c-418e-a033-d049a91f1e04)
+![open-bookmark](https://github.com/user-attachments/assets/99a22ec4-c383-4172-8727-0e2d4dca0c50)
 
 ## Development
 
