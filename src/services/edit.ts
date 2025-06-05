@@ -1,20 +1,9 @@
-import { writable } from "svelte/store";
-
 import { isFolderNode, type TreeNode } from "@/types/bookmarks";
-
-export const showModal = writable<TreeNode | null>(null);
-
-export function openModal(node: TreeNode) {
-  showModal.set(node);
-}
-
-export function closeModal() {
-  showModal.set(null);
-}
+import { modal } from "./modal";
 
 export async function handleSave(node: TreeNode, changes: { title: string, url?: string }) {
   await chrome.bookmarks.update(node.id, changes);
-  showModal.set(null);
+  modal.set(null);
 }
 
 export async function handleDelete(node: TreeNode) {
@@ -23,5 +12,5 @@ export async function handleDelete(node: TreeNode) {
   } else {
     chrome.bookmarks.remove(node.id);
   }
-  showModal.set(null);
+  modal.set(null);
 }

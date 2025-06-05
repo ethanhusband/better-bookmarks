@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { closeModal, handleDelete, handleSave } from '@/services/edit';
+  import { handleDelete, handleSave } from '@/services/edit';
+  import { closeModal } from '@/services/modal';
   import { isFolderNode, type TreeNode } from '@/types/bookmarks';
 
   export let node: TreeNode;

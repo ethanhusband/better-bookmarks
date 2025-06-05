@@ -11,6 +11,7 @@
   import ExportButton from "@/components/ExportButton.svelte";
   import ImportButton from "@/components/ImportButton.svelte";
   import SetBackgroundButton from "@/components/SetBackgroundButton.svelte";
+    import GridNewFolder from "@/components/GridNewFolder.svelte";
 
   export let depth: number;
   export let path: ID[];
@@ -63,6 +64,7 @@
           folderNode={item}
         />
       {/each}
+      <GridNewFolder parentId={folder ? folder.id : '1'} />
     </Grid>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LevelNavigator } from "@/lib/LevelNavigator";
+  import { LevelNavigator } from "@/lib/levelNavigator";
   import { isDarkMode } from '@/services/theme';
   import Breadcrumbs from "@/components/Breadcrumbs.svelte";
   import List from "@/components/List.svelte";

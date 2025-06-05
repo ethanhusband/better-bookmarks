@@ -1,22 +1,20 @@
 <script lang="ts">
   import GridIcon from "@/components/GridIcon.svelte";
   import { openModal } from "@/services/modal";
-  import type { FolderNode } from '@/types/bookmarks';
-  import EditModal from "./EditModal.svelte";
+  import type { ID } from "@/types/abstract";
+  import CreateFolderModal from '@/components/CreateFolderModal.svelte';
 
-  export let folderNode: FolderNode;
-  export let onClick: () => void;
+  export let parentId: ID;
 </script>
 
 <button
   class="folder-card"
-  on:click={onClick}
-  on:contextmenu|preventDefault={() => openModal([EditModal, { node: folderNode }])}
+  on:click={() => openModal([CreateFolderModal, { parentId }])}
 >
   <GridIcon backgroundColor="rgba(0,0,0,0.25)" backgroundColorHover="rgba(0,0,0,0.4)">
-    <img class="folder-icon" src="/assets/folder.png" alt="{folderNode.title} Folder" />
+    <img class="add-icon" src="/assets/add.png" alt="Add" />
   </GridIcon>
-  <div class="folder-title">{folderNode.title}</div>
+  <div class="folder-title">New Folder</div>
 </button>
 
 <style>
@@ -45,9 +43,9 @@
     gap: 8px;
   }
 
-  .folder-icon {
-    width: 40px;
-    height: 40px;
+  .add-icon {
+    width: 32px;
+    height: 32px;
   }
 
   .folder-title {

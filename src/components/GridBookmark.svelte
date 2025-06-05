@@ -1,9 +1,10 @@
 <script lang="ts">
+	import EditModal from '@/components/EditModal.svelte';
   import { onMount } from 'svelte';
   import { extractFavicon } from '@/lib/extractFavicon';
   import GridIcon from './GridIcon.svelte';
   import type { BookmarkNode } from '@/types/bookmarks';
-    import { openModal } from '@/services/edit';
+  import { openModal } from '@/services/modal';
 
   export let bookmarkNode: BookmarkNode;
 
@@ -18,7 +19,7 @@
   href={bookmarkNode.url}
   rel="noopener noreferrer"
   class="bookmark-card"
-  on:contextmenu|preventDefault={() => openModal(bookmarkNode)}
+  on:contextmenu|preventDefault={() => openModal([EditModal, { node: bookmarkNode }])}
 >
   <GridIcon backgroundColor="#f7f7f7">
     {#if faviconUrl}

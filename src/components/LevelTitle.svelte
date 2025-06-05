@@ -17,7 +17,7 @@
   style="--scale: {scale}; --icon_scale: {iconScale}"
 >
   {#if !isRoot}
-    <Chevron />
+    <Chevron color="#FFF"/>
   {/if}
   <img src={iconUrl} alt={title + " Icon"} class="icon" />
   <p class="title">{title}</p>

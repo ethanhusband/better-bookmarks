@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { onMount, setContext } from 'svelte';
+  import { onMount } from 'svelte';
   import { get } from 'svelte/store';
 
   import BackgroundImage from '@/components/BackgroundImage.svelte';
   import EditModal from '@/components/EditModal.svelte';
   import { LevelNavigator } from '@/lib/levelNavigator';
+  import { range } from '@/lib/range';
   import FolderLevel from '@/containers/FolderLevel.svelte';
   import type { FolderNode } from '@/types/bookmarks';
   import { getPinPath, pinPath } from '@/services/pinned';
-  import { range } from '@/lib/range';
-  import { showModal } from './services/edit';
+  import { modal } from '@/services/modal';
 
   let navigatorLevels: LevelNavigator[] = [];
 
@@ -70,10 +70,8 @@
     {/each}
   </div>
 
-  {#if $showModal}
-    <EditModal
-      node={$showModal}
-    />
+  {#if $modal}
+    <svelte:component this={$modal[0]} {...$modal[1]} />
   {/if}
 </BackgroundImage>
 
