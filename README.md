@@ -31,6 +31,15 @@ Then to run the extension:
 3. Open to the `dist` directory
 4. Anytime you make changes, rerun `vite build` and hit refresh on the extension in `chrome://extensions`
 
+## Deploy
+
+To create a package for the Chrome webstore
+
+1. Bump the version in `manifest.json` and `git tag` the version
+2. Run `vite build` to create the dist directory
+3. Zip the contents of the directory `zip -r dist.zip dist/*`
+4. Upload the .zip file, renamed to `better-bookmarks-<version>.zip`
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0 or later.
