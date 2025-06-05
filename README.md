@@ -39,6 +39,7 @@ To create a package for the Chrome webstore
 2. Run `vite build` to create the dist directory
 3. Zip the contents of the directory `zip -r dist.zip dist/*`
 4. Upload the .zip file, renamed to `better-bookmarks-<version>.zip`
+5. Add the release to Github
 
 ## License
 
