@@ -1,8 +1,23 @@
 <script lang="ts">
+  import { dndzone } from 'svelte-dnd-action';
+  import type { TreeNode } from '@/types/bookmarks';
+
+  export let items: TreeNode[];
 </script>
 
 
-<div class="Grid">
+<div 
+  class="Grid"
+  use:dndzone={{ 
+    items,
+    flipDurationMs: 150,
+    dragDisabled: false,
+    dropFromOthersDisabled: true,
+    zoneTabIndex: -1,
+  }}
+  on:consider
+  on:finalize
+>
   <slot></slot>
 </div>
 

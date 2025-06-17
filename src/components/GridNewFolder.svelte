@@ -8,7 +8,7 @@
 </script>
 
 <button
-  class="folder-card"
+  class="new-folder-card"
   on:click={() => openModal([CreateFolderModal, { parentId }])}
 >
   <GridIcon backgroundColor="rgba(0,0,0,0.25)" backgroundColorHover="rgba(0,0,0,0.4)">
@@ -33,7 +33,7 @@
     appearance: none;
   }
 
-  .folder-card {
+  .new-folder-card {
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -3,11 +3,10 @@
   import { get } from 'svelte/store';
 
   import BackgroundImage from '@/components/BackgroundImage.svelte';
-  import EditModal from '@/components/EditModal.svelte';
   import { LevelNavigator } from '@/lib/levelNavigator';
   import { range } from '@/lib/range';
   import FolderLevel from '@/containers/FolderLevel.svelte';
-  import type { FolderNode } from '@/types/bookmarks';
+  import { extractFolders, type FolderNode } from '@/types/bookmarks';
   import { getPinPath, pinPath } from '@/services/pinned';
   import { modal } from '@/services/modal';
 
@@ -38,9 +37,11 @@
       if (startingPath.length > 1) {
         // index 0 should always be a placeholder for root
         startingPath.slice(1).forEach((id, i) => {
-          const pinnedPathFolder = get(initialNavigatorLevels[i].displayedFolders).find((folder) => folder.id === id);
+          const folders = extractFolders(get(initialNavigatorLevels[i].displayedBookmarks))
+
+          const pinnedPathFolder = folders.find((folder) => folder.id === id);
           if (!pinnedPathFolder) {
-            console.warn('could not find pinned path folder', id, 'in', get(initialNavigatorLevels[i].displayedFolders));
+            console.warn('could not find pinned path folder', id, 'in', folders);
             navigatorLevels = initialNavigatorLevels;
             return;
           }

@@ -7,13 +7,12 @@
   import ListFolder from "@/components/ListFolder.svelte";
   import ThemeToggle from "./components/ThemeToggle.svelte";
   import HorizontalLine from "./components/HorizontalLine.svelte";
-  import { type FolderNode } from "./types/bookmarks";
+  import { isBookmarkNode, isFolderNode, type FolderNode } from "./types/bookmarks";
 
   const navigator = new LevelNavigator(null);
   const {
     breadcrumbs,
-    displayedBookmarks,
-    displayedFolders,
+    displayedBookmarks
   } = navigator;
 </script>
 
@@ -43,16 +42,17 @@
 
   <List>
     {#each $displayedBookmarks as item (item.id)}
-      <ListBookmark
-        title={item.title}
-        url={item.url}
-      />
-    {/each}
-    {#each $displayedFolders as item (item.id)}
-      <ListFolder
-        onClick={() => navigator.loadFolder(item)}
-        title={item.title}
-      />
+      {#if isBookmarkNode(item)}
+        <ListBookmark
+          title={item.title}
+          url={item.url}
+        />
+      {:else if isFolderNode(item)}
+        <ListFolder
+          onClick={() => navigator.loadFolder(item)}
+          title={item.title}
+        />
+      {/if}
     {/each}
   </List>
 </div>

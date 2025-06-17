@@ -1,28 +1,52 @@
 <script lang="ts">
+  import { dndzone, type DndEvent, type DndEventInfo } from 'svelte-dnd-action';
+
   import HorizontalLine from "@/components/HorizontalLine.svelte";
   import Grid from "@/components/Grid.svelte";
   import GridBookmark from "@/components/GridBookmark.svelte";
   import GridFolder from "@/components/GridFolder.svelte";
   import type { LevelNavigator } from "@/lib/levelNavigator";
-  import type { FolderNode } from "@/types/bookmarks";
+  import { isBookmarkNode, isFolderNode, type FolderNode, type TreeNode } from "@/types/bookmarks";
   import LevelTitle from "@/components/LevelTitle.svelte";
   import PinOpen from "@/components/PinButton.svelte";
   import type { ID } from "@/types/abstract";
   import ExportButton from "@/components/ExportButton.svelte";
   import ImportButton from "@/components/ImportButton.svelte";
   import SetBackgroundButton from "@/components/SetBackgroundButton.svelte";
-    import GridNewFolder from "@/components/GridNewFolder.svelte";
+  import GridNewFolder from "@/components/GridNewFolder.svelte";
 
   export let depth: number;
   export let path: ID[];
   export let levelNavigator: LevelNavigator;
   export let loadLevel: (folderNode: FolderNode | null, fromDepth: number) => void;
 
+  let items: TreeNode[];
   const {
     displayedBookmarks,
-    displayedFolders,
-    folder,
+    folder
   } = levelNavigator;
+
+  displayedBookmarks.subscribe((bookmarks) => items = bookmarks);
+
+  function handleDrop(event: CustomEvent<DndEvent<TreeNode>>) {
+    const newOrder = event.detail.items;
+
+    console.log('setting new displayedBookmarks');
+    displayedBookmarks.set(newOrder);
+
+    console.log('done. updating api');
+    for (const [index, item] of newOrder.entries()) {
+      chrome.bookmarks.move(item.id, { index });
+    }
+    console.log('updated chrome api');
+  }
+
+  function handleConsider(event: CustomEvent<DndEvent<TreeNode>>) {
+    const newOrder = event.detail.items;
+
+    console.log('considering', newOrder.map((x) => x.title));
+    displayedBookmarks.set(newOrder);
+  }
 </script>
 
 <div class="FolderLevel">
@@ -52,17 +76,22 @@
   />
 
   <div class="main">
-    <Grid>
+    <Grid
+      {items}
+      on:consider={(e) => handleConsider(e as CustomEvent<DndEvent<TreeNode>>)}
+      on:finalize={(e) => handleDrop(e as CustomEvent<DndEvent<TreeNode>>)}
+    >
       {#each $displayedBookmarks as item (item.id)}
-        <GridBookmark
-          bookmarkNode={item}
-        />
-      {/each}
-      {#each $displayedFolders as item (item.id)}
-        <GridFolder
-          onClick={() => loadLevel(item, depth)}
-          folderNode={item}
-        />
+        {#if isBookmarkNode(item)}
+          <GridBookmark
+            bookmarkNode={item}
+          />
+        {:else if isFolderNode(item)}
+          <GridFolder
+            onClick={() => loadLevel(item, depth)}
+            folderNode={item}
+          />
+        {/if}
       {/each}
       <GridNewFolder parentId={folder ? folder.id : '1'} />
     </Grid>

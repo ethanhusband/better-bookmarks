@@ -10,7 +10,6 @@ Feel free to pick these up if you wish to contribute.
 
 - Can't create folder inside folder
 
-### Development Bugs
+### Dev Bugs
 
-- Calls to `openModal` have type errors
-- Weird import type error in `Popup.svelte`
+- Calls to `openModal` have type errors, but actually work

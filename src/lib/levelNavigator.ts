@@ -2,10 +2,7 @@ import { writable, get } from 'svelte/store';
 
 import {
   type TreeNode,
-  type BookmarkNode,
   type FolderNode,
-  extractBookmarks,
-  extractFolders
 } from '@/types/bookmarks';
 
 export class LevelNavigator {
@@ -14,8 +11,7 @@ export class LevelNavigator {
   public breadcrumbs = writable<FolderNode[]>([]);
   public folderLevels = writable<Record<number, TreeNode[]>>({});
 
-  public displayedBookmarks = writable<BookmarkNode[]>([]);
-  public displayedFolders = writable<FolderNode[]>([]);
+  public displayedBookmarks = writable<TreeNode[]>([]);
 
   constructor(folderNode: FolderNode | null) {
     this.loadFolder(folderNode);    
@@ -53,14 +49,12 @@ export class LevelNavigator {
           allDisplayed.push(...child.children);
         });
 
-        this.displayedBookmarks.set(extractBookmarks(allDisplayed));
-        this.displayedFolders.set(extractFolders(allDisplayed));
+        this.displayedBookmarks.set(allDisplayed);
       });      
     } else {
       chrome.bookmarks.getChildren(folderNode.id, (children) => {
         // this segment is deliberately repeated - it needs to run inside this block for proper synchronicity
-        this.displayedBookmarks.set(extractBookmarks(children));
-        this.displayedFolders.set(extractFolders(children));
+        this.displayedBookmarks.set(children);
       });
     }
   }
