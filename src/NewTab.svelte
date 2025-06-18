@@ -10,16 +10,31 @@
   import { getPinPath, pinPath } from '@/services/pinned';
   import { modal } from '@/services/modal';
     import type { DndEvent } from 'svelte-dnd-action';
+    import { folder } from 'jszip';
 
   let navigatorLevels: LevelNavigator[] = [];
 
   function loadLevel(folderNode: FolderNode | null, fromDepth: number) {
+    // when running this on an already open folder, it should close it
+    const openFolder = navigatorLevels.length > fromDepth + 1
+      ? navigatorLevels[fromDepth + 1].folder
+      : null;
+    if (openFolder && folderNode && openFolder.id === folderNode.id) {
+      const newNavigatorLevels = [ ...navigatorLevels];
+      newNavigatorLevels.splice(fromDepth + 1);
+      
+      navigatorLevels = newNavigatorLevels;
+      return;
+    }
+
+
     const navigator = new LevelNavigator(folderNode);
     const depth = fromDepth + 1;
 
     const newNavigatorLevels = [ ...navigatorLevels];
     newNavigatorLevels.splice(depth);
     newNavigatorLevels.push(navigator);
+
     navigatorLevels = newNavigatorLevels;
   }
 
@@ -88,7 +103,7 @@
   <div class="NewTab">
     {#each navigatorLevels as navigator, depth (navigator.folder)}
       <FolderLevel
-        navigator={navigator}
+        navigatorLevels={navigatorLevels}
         loadLevel={loadLevel}
         handleDrop={handleFinalize}
         handleConsider={handleConsider}

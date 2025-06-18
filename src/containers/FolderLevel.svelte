@@ -17,7 +17,7 @@
 
   export let depth: number;
   export let path: ID[];
-  export let navigator: LevelNavigator;
+  export let navigatorLevels: LevelNavigator[];
   export let handleDrop: (e: CustomEvent<DndEvent<TreeNode>>, depth: number) => void;
   export let handleConsider: (e: CustomEvent<DndEvent<TreeNode>>, depth: number) => void;
   export let loadLevel: (folderNode: FolderNode | null, fromDepth: number) => void;
@@ -26,7 +26,7 @@
   const {
     displayedBookmarks,
     folder
-  } = navigator;
+  } = navigatorLevels[depth];
 
   displayedBookmarks.subscribe((bookmarks) => items = bookmarks);
 </script>
