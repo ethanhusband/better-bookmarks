@@ -41,6 +41,13 @@
     overflow: hidden;
     padding: 8px;
     gap: 8px;
+
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    position: relative;
+    z-index: 1;
   }
 
   .add-icon {

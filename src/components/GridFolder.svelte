@@ -43,6 +43,12 @@
     overflow: hidden;
     padding: 8px;
     gap: 8px;
+
+    background: rgba(0,0,0,0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 1rem;
+    position: relative;
+    z-index: 1;
   }
 
   .folder-icon {

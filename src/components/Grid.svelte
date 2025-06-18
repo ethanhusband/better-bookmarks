@@ -24,6 +24,7 @@
 <style>
   .Grid {
     border-radius: 10px;
+    padding: 0.5rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px);   /* create as many 100px columns as will fit, then wrap */
     grid-auto-rows: auto;

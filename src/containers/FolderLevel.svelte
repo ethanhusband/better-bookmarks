@@ -57,27 +57,25 @@
     marginX={2}
   />
 
-  <div class="main">
-    <Grid
-      on:consider={(e) => handleConsider(e as CustomEvent<DndEvent<TreeNode>>, depth)}
-      on:finalize={(e) => handleDrop(e as CustomEvent<DndEvent<TreeNode>>, depth)}
-      items={items}
-    >
-      {#each $displayedBookmarks as item (item.id)}
-        {#if isBookmarkNode(item)}
-          <GridBookmark
-            bookmarkNode={item}
-          />
-        {:else if isFolderNode(item)}
-          <GridFolder
-            onClick={() => loadLevel(item, depth)}
-            folderNode={item}
-          />
-        {/if}
-      {/each}
-      <GridNewFolder parentId={folder ? folder.id : '1'} />
-    </Grid>
-  </div>
+  <Grid
+    on:consider={(e) => handleConsider(e as CustomEvent<DndEvent<TreeNode>>, depth)}
+    on:finalize={(e) => handleDrop(e as CustomEvent<DndEvent<TreeNode>>, depth)}
+    items={items}
+  >
+    {#each $displayedBookmarks as item (item.id)}
+      {#if isBookmarkNode(item)}
+        <GridBookmark
+          bookmarkNode={item}
+        />
+      {:else if isFolderNode(item)}
+        <GridFolder
+          onClick={() => loadLevel(item, depth)}
+          folderNode={item}
+        />
+      {/if}
+    {/each}
+    <GridNewFolder parentId={folder ? folder.id : '1'} />
+  </Grid>
 </div>
 
 <style>
@@ -98,9 +96,5 @@
     flex-direction: row;
     gap: 8px;
     align-items: center;
-  }
-
-  .main {
-    padding: 1rem 0rem;
   }
 </style>
