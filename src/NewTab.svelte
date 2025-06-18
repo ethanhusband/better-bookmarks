@@ -6,9 +6,10 @@
   import { LevelNavigator } from '@/lib/levelNavigator';
   import { range } from '@/lib/range';
   import FolderLevel from '@/containers/FolderLevel.svelte';
-  import { extractFolders, type FolderNode } from '@/types/bookmarks';
+  import { extractFolders, type FolderNode, type TreeNode } from '@/types/bookmarks';
   import { getPinPath, pinPath } from '@/services/pinned';
   import { modal } from '@/services/modal';
+    import type { DndEvent } from 'svelte-dnd-action';
 
   let navigatorLevels: LevelNavigator[] = [];
 
@@ -54,6 +55,30 @@
     });
   }
 
+  function updateLevel(idx: number, newList: TreeNode[]) {
+    navigatorLevels[idx].displayedBookmarks.set(newList);
+  }
+
+  function handleConsider(e: CustomEvent<DndEvent<TreeNode>>, idx: number) {
+    const preview = e.detail.items;
+    updateLevel(idx, preview);
+  }
+
+  function handleFinalize(e: CustomEvent<DndEvent<TreeNode>>, index: number) {
+    const level   = navigatorLevels[index];
+    const newList = e.detail.items;
+    const parentId = level.folder?.id ?? '1';
+
+    updateLevel(index, newList);
+
+    newList.forEach((node, newIndex) => {
+      chrome.bookmarks.move(node.id, {
+        parentId,
+        index: newIndex
+      });
+    });
+  }
+
   onMount(() => {
     setupNavigator();
   });
@@ -63,8 +88,10 @@
   <div class="NewTab">
     {#each navigatorLevels as navigator, depth (navigator.folder)}
       <FolderLevel
-        levelNavigator={navigator}
+        navigator={navigator}
         loadLevel={loadLevel}
+        handleDrop={handleFinalize}
+        handleConsider={handleConsider}
         depth={depth}
         path={range(0,depth).map((num) => navigatorLevels[num].folder ? navigatorLevels[num].folder.id : 'root')}
       />

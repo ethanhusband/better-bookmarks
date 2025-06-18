@@ -17,36 +17,18 @@
 
   export let depth: number;
   export let path: ID[];
-  export let levelNavigator: LevelNavigator;
+  export let navigator: LevelNavigator;
+  export let handleDrop: (e: CustomEvent<DndEvent<TreeNode>>, depth: number) => void;
+  export let handleConsider: (e: CustomEvent<DndEvent<TreeNode>>, depth: number) => void;
   export let loadLevel: (folderNode: FolderNode | null, fromDepth: number) => void;
 
   let items: TreeNode[];
   const {
     displayedBookmarks,
     folder
-  } = levelNavigator;
+  } = navigator;
 
   displayedBookmarks.subscribe((bookmarks) => items = bookmarks);
-
-  function handleDrop(event: CustomEvent<DndEvent<TreeNode>>) {
-    const newOrder = event.detail.items;
-
-    console.log('setting new displayedBookmarks');
-    displayedBookmarks.set(newOrder);
-
-    console.log('done. updating api');
-    for (const [index, item] of newOrder.entries()) {
-      chrome.bookmarks.move(item.id, { index });
-    }
-    console.log('updated chrome api');
-  }
-
-  function handleConsider(event: CustomEvent<DndEvent<TreeNode>>) {
-    const newOrder = event.detail.items;
-
-    console.log('considering', newOrder.map((x) => x.title));
-    displayedBookmarks.set(newOrder);
-  }
 </script>
 
 <div class="FolderLevel">
@@ -77,9 +59,9 @@
 
   <div class="main">
     <Grid
-      {items}
-      on:consider={(e) => handleConsider(e as CustomEvent<DndEvent<TreeNode>>)}
-      on:finalize={(e) => handleDrop(e as CustomEvent<DndEvent<TreeNode>>)}
+      on:consider={(e) => handleConsider(e as CustomEvent<DndEvent<TreeNode>>, depth)}
+      on:finalize={(e) => handleDrop(e as CustomEvent<DndEvent<TreeNode>>, depth)}
+      items={items}
     >
       {#each $displayedBookmarks as item (item.id)}
         {#if isBookmarkNode(item)}

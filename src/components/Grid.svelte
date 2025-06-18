@@ -12,8 +12,8 @@
     items,
     flipDurationMs: 150,
     dragDisabled: false,
-    dropFromOthersDisabled: true,
-    zoneTabIndex: -1,
+    type: 'shared',
+    dropTargetStyle: { outline: '2px solid #007bff' }
   }}
   on:consider
   on:finalize
@@ -23,6 +23,7 @@
 
 <style>
   .Grid {
+    border-radius: 10px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px);   /* create as many 100px columns as will fit, then wrap */
     grid-auto-rows: auto;
