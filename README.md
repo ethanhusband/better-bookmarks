@@ -14,8 +14,8 @@ The default search bar that typically fills that New Tab space is some of the mo
 
 Better Bookmarks overrides the default New Tab screen, providing a cleaner looking bookmark navigator more reminiscent of an App Store - making use of that otherwise wasted New Tab space. When opening a new tab to access bookmarks, you no longer have to misclick and then click those tiny links at the top of your screen.
 
-![better-bookmarks](https://github.com/user-attachments/assets/8a36de08-1c4c-418e-a033-d049a91f1e04)
-![open-bookmark](https://github.com/user-attachments/assets/99a22ec4-c383-4172-8727-0e2d4dca0c50)
+![better-bookmarks-0 4 0-1](https://github.com/user-attachments/assets/67458711-152e-446f-9dab-b8d730aa31e6)
+![chrome-extension___emnlpalookinhkceincdepnkeijokngm_src_entrypoints_newtab html (1)](https://github.com/user-attachments/assets/55845f89-6c95-436b-91cd-6eaf1d5f0a32)
 
 ## Development
 
